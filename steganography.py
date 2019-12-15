@@ -40,12 +40,12 @@ def genData(data):
     So, use the ASCII value of characters
     '''
 
-	newd = []
+    newd = []
 #   Make a list called new data
 
-	for i in data:
-		newd.append(format(ord(i), '08b'))
-	return newd
+    for i in data:
+        newd.append(format(ord(i), '08b'))
+    return newd
 
 def modPix(pix, data):
     '''
@@ -56,20 +56,20 @@ def modPix(pix, data):
     '''
 
 #   First we of course need to encode it
-	datalist = genData(data)
+    datalist = genData(data)
 
-	lendata = len(datalist)
-	imdata = iter(pix)
+    lendata = len(datalist)
+    imdata = iter(pix)
 
-	for i in range(lendata):
+    for i in range(lendata):
 
-		# Extract 3 pixels at a time
+        # Extract 3 pixels at a time
         pix = [value for value in imdata.__next__()[:3] +
-								  imdata.__next__()[:3] +
-								  imdata.__next__()[:3]]
+                                  imdata.__next__()[:3] +
+                                  imdata.__next__()[:3]]
 
-		# Pixel value should be made
-		# odd for 1 and even for 0
+        # Pixel value should be made
+        # odd for 1 and even for 0
         for j in range(0, 8):
 #           We only need to check 8 pixels
 
@@ -86,19 +86,19 @@ def modPix(pix, data):
 #       As we defined earlier:
 #       0 means keep reading, 1 means the message is over.
 
-		if (i == lendata - 1):
+        if (i == lendata - 1):
             # Our last pixel row
 
             if (pix[-1] % 2 == 0):
-				pix[-1] -= 1
-		else:
-			if (pix[-1] % 2 != 0):
-				pix[-1] -= 1
+                pix[-1] -= 1
+        else:
+            if (pix[-1] % 2 != 0):
+                pix[-1] -= 1
 
-		pix = tuple(pix)
-		yield pix[0:3]
-		yield pix[3:6]
-		yield pix[6:9]
+        pix = tuple(pix)
+        yield pix[0:3]
+        yield pix[3:6]
+        yield pix[6:9]
 
 def encode_enc(newimg, data):
     '''
@@ -107,20 +107,20 @@ def encode_enc(newimg, data):
     Using the 'modPix' function we made earlier
     '''
 
-	w = newimg.size[0]
+    w = newimg.size[0]
 
 #   Initialise x and y as 0, 0
-	(x, y) = (0, 0)
+    (x, y) = (0, 0)
 
-	for pixel in modPix(newimg.getdata(), data):
+    for pixel in modPix(newimg.getdata(), data):
 
-		# Putting modified pixels in the new image
-		newimg.putpixel((x, y), pixel)
-		if (x == w - 1):
-			x = 0
-			y += 1
-		else:
-			x += 1
+        # Putting modified pixels in the new image
+        newimg.putpixel((x, y), pixel)
+        if (x == w - 1):
+            x = 0
+            y += 1
+        else:
+            x += 1
 
 def encodeText():
     '''
@@ -128,31 +128,31 @@ def encodeText():
     Finally encode the data into an image
     '''
 
-	img = input("Enter image name: ")
+    img = input("Enter image name: ")
     print()
 
 #   Here we will use PIL module to open the image and extract pixels
-	image = Image.open(img, 'r')
+    image = Image.open(img, 'r')
 
-	data = input("Enter data to be encoded : ")
+    data = input("Enter data to be encoded : ")
     print()
 
-	if (len(data) == 0):
+    if (len(data) == 0):
 
 #       If user does not enter anything
-		raise ValueError('Data is empty')
+        raise ValueError('Data is empty')
 
 #   make a new image where we will apply our algorithm
 #   PIL comes to our rescue
-	newimg = image.copy()
+    newimg = image.copy()
 
-	encode_enc(newimg, data)
+    encode_enc(newimg, data)
 
-	new_img_name = input("Enter the name of new image: ")
+    new_img_name = input("Enter the name of new image: ")
 
 # Finally save the new Image
 # Again PIL helps us
-	newimg.save(new_img_name, str(new_img_name.split(".")[1].upper()))
+    newimg.save(new_img_name, str(new_img_name.split(".")[1].upper()))
 
     print("Image stored: " + new_img_name)
 
@@ -214,7 +214,7 @@ def main():
 
 if __name__ == '__main__' :
 
-	main()
+    main()
 
 '''
 print("functions- main, genData, modPix, encode_enc, encodeText, decode")
