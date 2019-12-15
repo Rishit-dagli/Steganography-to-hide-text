@@ -204,7 +204,7 @@ def main():
     a=int(input())
 
     if (a == 1):
-        encode()
+        encodeText()
 
     elif (a == 2):
         print("Decoded word is " + decode())
